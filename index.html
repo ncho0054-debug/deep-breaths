@@ -1,9 +1,4 @@
-<!doctype html>
-<html lang="en">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Deep Breaths</title>
+<!doctype html><html><head><meta charset="utf-8"><title>Deep Breaths</title><meta name="description" content="Deep Breaths: vaping prevention in schools, a 10-hour Year 10 learning journey."><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&display=swap">
@@ -136,10 +131,65 @@ th{background:var(--band);font-family:var(--display)}
 tr:last-child td{border-bottom:0}
 code{font:700 14px var(--body);color:var(--accent)}
 
+.sc-head{display:flex;justify-content:space-between;align-items:center;gap:8px}
+.sc-chip{font-size:13px;font-weight:700;border-radius:999px;padding:2px 10px;background:var(--band);color:var(--fg);font-variant-numeric:tabular-nums}
+.sc-list{list-style:none;padding:0;display:flex;flex-direction:column;gap:10px}
+.sc-list li{display:grid;grid-template-columns:22px minmax(0,1fr);gap:10px;align-items:start}
+.sc-list input{width:20px;height:20px;margin:2px 0 0;accent-color:var(--c);cursor:pointer}
+.sc-list label{cursor:pointer}
+.sc-list input:checked + label{color:var(--muted)}
+.sc-card.met{background:color-mix(in srgb,var(--c) 9%,var(--surface));border-color:var(--c)}
+.sc-card.met .sc-chip{background:var(--c);color:#fff}
+.sc-met{font-weight:700;color:var(--c)}
+.sc-progress{display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.sc-bar{flex:1;min-width:160px;height:10px;border-radius:999px;background:var(--band);overflow:hidden}
+.sc-bar span{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--s1),var(--s3),var(--s5));transition:width .3s}
+.sc-progress span#scTotal{font-size:15px;color:var(--muted);font-variant-numeric:tabular-nums}
+.sc-progress button{font:700 14px var(--body);background:transparent;color:var(--accent);border:1px solid var(--line);border-radius:8px;padding:5px 12px;cursor:pointer}
+.sc-done{font-family:var(--display);font-size:20px;font-weight:700;color:var(--s1);text-align:center}
+.fmt-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:26px 18px;padding-top:12px}
+.fmt{position:relative;margin:0;display:flex;flex-direction:column;gap:10px;min-width:0}
+.fmt figcaption{font-size:14px;color:var(--muted);display:flex;flex-direction:column;gap:2px}
+.fmt figcaption b{font-family:var(--display);font-size:17px;color:var(--fg)}
+.ex-badge{position:absolute;top:-11px;left:50%;transform:translateX(-50%);z-index:2;font:700 11px var(--body);letter-spacing:.1em;text-transform:uppercase;background:rgba(255,255,255,.92);color:#17262d;border:1px dashed #53666f;border-radius:999px;padding:3px 9px}
+.fmt-note{font-size:13px;color:var(--muted)}
+.mock{position:relative;aspect-ratio:4/5;border-radius:12px;overflow:hidden;border:1px solid var(--line);display:flex;flex-direction:column;min-width:0;max-width:100%}
+.poster{background:linear-gradient(160deg,#0f3d4a,#1b6f80);color:#eaf6f8;padding:18px;gap:6px;justify-content:flex-end}
+.p-tag{align-self:flex-start;font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;background:#d9622b;color:#fff;padding:2px 8px;border-radius:4px;margin-bottom:auto}
+.p-big{font-family:var(--display);font-size:clamp(40px,4.4vw,56px);line-height:.95;color:#7fd3df}
+.p-head{font-family:var(--display);font-weight:700;font-size:17px;line-height:1.2}
+.p-sub{font-size:13px;color:#a9cdd5}
+.p-foot{font-size:11px;border-top:1px solid rgba(169,205,213,.4);padding-top:8px;margin-top:8px;color:#a9cdd5}
+.video{background:#10191e;padding:12px;gap:8px;justify-content:center}
+.v-frame{flex:1;border-radius:8px;background:radial-gradient(circle at 30% 30%,#5b6fd1,#2a2f5e);position:relative;display:grid;place-items:center}
+.v-cap{position:absolute;left:10px;right:10px;bottom:10px;font-family:var(--display);font-weight:700;font-size:14px;color:#fff;background:rgba(0,0,0,.45);padding:4px 8px;border-radius:6px}
+.v-play{width:46px;height:46px;border-radius:50%;background:rgba(255,255,255,.9);position:relative}
+.v-play::after{content:"";position:absolute;left:18px;top:13px;border-left:14px solid #2a2f5e;border-top:10px solid transparent;border-bottom:10px solid transparent}
+.v-bar{height:4px;border-radius:2px;background:#2b3a42}
+.v-bar span{display:block;width:40%;height:100%;background:#7fd3df;border-radius:2px}
+.v-meta{display:flex;justify-content:space-between;font-size:11px;color:#9fb4bc;font-variant-numeric:tabular-nums}
+.info{background:var(--surface);padding:16px;gap:10px}
+.i-title{font-family:var(--display);font-weight:800;font-size:18px;color:var(--fg)}
+.i-row{display:grid;grid-template-columns:62px minmax(0,1fr) 34px;align-items:center;gap:6px;font-size:12px;color:var(--muted)}
+.i-row b{font-size:13px;color:var(--fg);text-align:right;font-variant-numeric:tabular-nums}
+.i-bar{height:12px;border-radius:6px;background:var(--band);overflow:hidden}
+.i-bar i{display:block;height:100%;background:var(--s1)}
+.i-row:first-of-type .i-bar i{background:var(--s5)}
+.i-pill{font-size:12px;font-weight:700;padding:6px 10px;border-radius:8px;background:var(--band);color:var(--fg);border-left:4px solid var(--s3)}
+.social{background:var(--surface)}
+.s-top{display:flex;align-items:center;gap:8px;padding:8px 10px;font-size:12px;font-weight:700;color:var(--fg)}
+.s-av{width:22px;height:22px;border-radius:50%;background:linear-gradient(135deg,#d9622b,#7357b3)}
+.s-img{flex:1;background:linear-gradient(140deg,#7357b3,#d9622b);display:flex;flex-direction:column;justify-content:center;align-items:center;gap:4px;color:#fff;text-align:center;padding:10px}
+.s-img span{font-size:14px;opacity:.9}
+.s-img b{font-family:var(--display);font-size:22px;line-height:1.1}
+.s-act{display:flex;gap:12px;padding:6px 10px 0;font-size:12px;color:var(--fg)}
+.s-cap{font-size:12px;padding:2px 10px 10px;color:var(--muted)}
+.s-cap b{color:var(--fg)}
+@media (max-width:880px){.fmt-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
 .draft{border:2px dashed var(--draft-line);border-radius:12px;padding:18px;background:repeating-linear-gradient(135deg,transparent 0 14px,color-mix(in srgb,var(--draft) 55%,transparent) 14px 28px);display:flex;flex-direction:column;gap:16px}
 .draft-tag{align-self:flex-start;background:var(--draft);color:var(--draft-fg);border:1px solid var(--draft-line);border-radius:999px;padding:3px 12px;font-size:13px;font-weight:700;letter-spacing:.02em}
 .flag{display:inline-block;background:var(--draft);color:var(--draft-fg);border:1px solid var(--draft-line);border-radius:999px;padding:0 9px;font-size:12px;font-weight:700;vertical-align:middle;margin-left:6px}
-.refs p{padding-left:2em;text-indent:-2em;font-size:15px}
+.refs p{padding-left:2em;text-indent:-2em;font-size:15px;overflow-wrap:anywhere}
 .refs{gap:10px}
 footer{border-top:1px solid var(--line);background:var(--surface)}
 footer .in{padding-block:22px;font-size:14px;color:var(--muted);display:flex;flex-wrap:wrap;gap:8px 24px;justify-content:space-between;align-items:center}
@@ -157,21 +207,18 @@ footer .in{padding-block:22px;font-size:14px;color:var(--muted);display:flex;fle
   .act{grid-template-columns:minmax(0,1fr)}
 }
 </style>
-</head>
-<body>
-
 
 <nav class="nav" aria-label="Site">
   <div class="in">
     <a class="brand" href="#home"><i></i>Deep Breaths</a>
     <div class="links" id="links">
       <a href="#home">Home</a>
-      <a href="#why">Why Vaping Matters</a>
+      <a href="#why">Why the Issue of Vaping Matters</a>
       <a href="#approach" class="has-draft">Our Approach</a>
       <a href="#wellbeing">Teaching for Wellbeing</a>
       <a href="#journey">Learning Journey</a>
       <a href="#curriculum" class="has-draft">Curriculum</a>
-      <a href="#action">Learning to Action</a>
+      <a href="#action" class="has-draft">Learning to Action</a>
       <a href="#impact">Measuring Impact</a>
       <a href="#references">References</a>
     </div>
@@ -187,7 +234,7 @@ footer .in{padding-block:22px;font-size:14px;color:var(--muted);display:flex;fle
         <h1><span class="title">Deep Breaths</span><span class="sub">Vaping Prevention in Schools</span></h1>
         <div class="cta">
           <a class="btn" href="#journey">See the 10-Hour Journey</a>
-          <a class="btn ghost" href="#why">Why Vaping Matters</a>
+          <a class="btn ghost" href="#why">Why the Issue of Vaping Matters</a>
         </div>
       </div>
       <div class="station" id="station">
@@ -229,13 +276,13 @@ footer .in{padding-block:22px;font-size:14px;color:var(--muted);display:flex;fle
 
 <!-- ================= WHY VAPING MATTERS ================= -->
 <div class="view" id="v-why" hidden>
-  <header class="phead"><div class="in"><div class="eyebrow">The issue</div><h1>Why Vaping Matters</h1><p>Why vaping is a priority for Year 10 students, what drives it, and why schools need to respond.</p></div></header>
+  <header class="phead"><div class="in"><div class="eyebrow">The issue</div><h1>Why the Issue of Vaping Matters</h1><p>Why vaping is a priority for Year 10 students, what drives it, and why schools need to respond.</p></div></header>
   <section class="band">
     <div class="in facts">
       <div class="fact"><b>30%</b><span>of Australian secondary students have tried vaping (Scully et al., 2023)</span></div>
       <div class="fact"><b>22.1%</b><span>of 16–17-year-old students have vaped in the last month (Australian Government Department of Health, Disability and Ageing, 2024)</span></div>
       <div class="fact"><b>5.3% → 21%</b><span>increase in vaping among 18–24-year-olds from 2019 to 2023, just after students leave school</span></div>
-      <div class="fact"><b>10 hours</b><span>of a learning journey to begin</span></div>
+      <div class="fact"><b>10 hours</b><span>of a learning journey to understand the impact of vaping in schools</span></div>
     </div>
   </section>
   <section class="band alt">
@@ -304,9 +351,9 @@ footer .in{padding-block:22px;font-size:14px;color:var(--muted);display:flex;fle
         <p>The Family–School Partnerships Framework provides a practical guide of suggested strategies for building and improving partnerships between schools and families. It is organised around seven key dimensions, each with its own set of strategies.</p>
       </div>
       <div class="grid g3">
-        <div class="card top" style="--c:var(--s3)"><h3>Communication</h3><p>The communication dimension focuses on building constructive relationships through welcoming communication. Strategies include welcoming signage to promote inclusion, involving families in learning activities, involving families in setting and reviewing student goals throughout the year, and communicating information that helps families support learning and wellbeing.</p><a class="more" href="https://www.education.gov.au/node/7829" target="_blank" rel="noopener">The Framework ↗</a></div>
-        <div class="card top" style="--c:var(--s3)"><h3>Connecting Learning at Home and School</h3><p>This dimension recognises that valuable learning can happen at home and in the community. Strategies include drawing on the interests of students and families outside school, providing videos or photos of classroom learning to families, and providing information to help home-based learning.</p><a class="more" href="https://www.education.gov.au/node/7829" target="_blank" rel="noopener">The Framework ↗</a></div>
-        <div class="card top" style="--c:var(--s3)"><h3>Recognise the Role of the Family</h3><p>Parents are described as the primary educators of their children, with a lasting influence on attitude and achievement. Strategies include assessing whether current practices support family engagement, building family engagement into strategic plans, valuing families' knowledge of their child, and making school leaders visible.</p><a class="more" href="https://www.education.gov.au/node/7829" target="_blank" rel="noopener">The Framework ↗</a></div>
+        <div class="card top" style="--c:var(--s3)"><h3>Communication</h3><p>The communication dimension focuses on building constructive relationships through welcoming communication. Strategies include welcoming signage to promote inclusion, involving families in learning activities, involving families in setting and reviewing student goals throughout the year, and communicating information that helps families support learning and wellbeing.</p><a class="more" href="https://www.education.gov.au/supporting-family-school-community-partnerships-learning/family-school-partnerships/family-school-partnerships-framework" target="_blank" rel="noopener">The Framework ↗</a></div>
+        <div class="card top" style="--c:var(--s3)"><h3>Connecting Learning at Home and School</h3><p>This dimension recognises that valuable learning can happen at home and in the community. Strategies include drawing on the interests of students and families outside school, providing videos or photos of classroom learning to families, and providing information to help home-based learning.</p><a class="more" href="https://www.education.gov.au/supporting-family-school-community-partnerships-learning/family-school-partnerships/family-school-partnerships-framework" target="_blank" rel="noopener">The Framework ↗</a></div>
+        <div class="card top" style="--c:var(--s3)"><h3>Recognise the Role of the Family</h3><p>Parents are described as the primary educators of their children, with a lasting influence on attitude and achievement. Strategies include assessing whether current practices support family engagement, building family engagement into strategic plans, valuing families' knowledge of their child, and making school leaders visible.</p><a class="more" href="https://www.education.gov.au/supporting-family-school-community-partnerships-learning/family-school-partnerships/family-school-partnerships-framework" target="_blank" rel="noopener">The Framework ↗</a></div>
       </div>
     </div>
   </section>
@@ -511,6 +558,96 @@ footer .in{padding-block:22px;font-size:14px;color:var(--muted);display:flex;fle
       <div class="card top" style="--c:var(--s5)"><div class="k">What happens</div><p>Teams present their campaign and explain the decisions that informed it. The campaign should communicate a perspective based on personal convictions and the family and community beliefs explored throughout the learning journey.</p><p>The initial audience (the class) gives feedback on each campaign.</p></div>
     </div>
   </section>
+  <section class="band">
+    <div class="in stack">
+      <div class="prose">
+        <div class="eyebrow">Example formats · not final products</div>
+        <h2>What Could Students Create?</h2>
+        <p>These are <b>examples and templates only</b>, to show what each format could look like. They are not finished campaigns. Each group creates its own campaign from scratch, choosing the format, message and design that best suit their chosen issue and audience.</p>
+        <p>Offering a range of formats reflects Universal Design for Learning (CAST, 2018). Each format presents information through <b>multiple means of representation</b> (visual, video, data and text-based), so campaign messages can reach audiences with different needs and preferences. Letting students choose how they create their campaign also gives them multiple means of action and expression to show what they have learned.</p>
+      </div>
+      <div class="fmt-grid">
+        <figure class="fmt">
+          <span class="ex-badge">Example</span>
+          <div class="mock poster">
+            <span class="p-tag">Year 10 campaign</span>
+            <b class="p-big">7 in 10</b>
+            <span class="p-head">secondary students have never vaped.</span>
+            <span class="p-sub">You're not missing out. You're the majority.</span>
+            <span class="p-foot">Need to talk? Find the wellbeing team.</span>
+          </div>
+          <figcaption><b>Poster template</b>Bold, simple message for school corridors and bathrooms</figcaption>
+        </figure>
+        <figure class="fmt">
+          <span class="ex-badge">Example</span>
+          <div class="mock video">
+            <div class="v-frame">
+              <span class="v-cap">"What's actually in a vape?"</span>
+              <span class="v-play" aria-hidden="true"></span>
+            </div>
+            <div class="v-bar"><span></span></div>
+            <div class="v-meta"><span>0:12</span><span>0:30</span></div>
+          </div>
+          <figcaption><b>Short video template</b>A 30–60 second clip, such as a myth-buster or scenario role-play</figcaption>
+        </figure>
+        <figure class="fmt">
+          <span class="ex-badge">Example</span>
+          <div class="mock info">
+            <span class="i-title">Vaping: the facts</span>
+            <div class="i-row"><span>Tried vaping</span><div class="i-bar"><i style="width:30%"></i></div><b>30%</b></div>
+            <div class="i-row"><span>Never tried</span><div class="i-bar"><i style="width:70%"></i></div><b>70%</b></div>
+            <div class="i-pill">Nicotine affects the developing brain</div>
+            <div class="i-pill">Social media makes vaping look normal</div>
+          </div>
+          <figcaption><b>Infographic template</b>Key facts and figures turned into an easy-to-read visual</figcaption>
+        </figure>
+        <figure class="fmt">
+          <span class="ex-badge">Example</span>
+          <div class="mock social">
+            <div class="s-top"><span class="s-av"></span><span>sunrise.y10.campaign</span></div>
+            <div class="s-img"><span>Peer pressure?</span><b>"Nah, I'm good."</b></div>
+            <div class="s-act"><span>♥ 128</span><span>💬 14</span></div>
+            <p class="s-cap"><b>sunrise.y10.campaign</b> Three easy ways to say no, and still keep your friends.</p>
+          </div>
+          <figcaption><b>Social media post template</b>A shareable post that speaks students' language</figcaption>
+        </figure>
+      </div>
+      <p class="fmt-note">Example templates only. Students design their own content. Statistic in the poster and infographic examples is based on Scully et al. (2023): about 30% of Australian secondary students have tried vaping.</p>
+    </div>
+  </section>
+  <section class="band alt">
+    <div class="in">
+      <div class="draft">
+        <div class="draft-tag">Incomplete · Draft for the group to review</div>
+        <div class="prose">
+          <h2>How Do I Know I've Hit the Success Criteria?</h2>
+          <p>Before presenting, each student checks their campaign against the success criteria. Tick each statement you can honestly say is true for your campaign. Anything left unticked is something to improve before the showcase.</p>
+        </div>
+        <div class="sc-progress"><div class="sc-bar"><span id="scBar"></span></div><span id="scTotal" aria-live="polite">0 of 10 ticked</span><button type="button" id="scReset">Clear all</button></div>
+        <div class="grid g3" style="align-items:start">
+        <div class="card top sc-card" style="--c:var(--s1)" data-card="0">
+          <div class="sc-head"><div class="k">Criterion 1</div><span class="sc-chip" id="chip0">0/3</span></div>
+          <h3>Prior knowledge and what shapes my views</h3>
+          <ul class="sc-list"><li><input type="checkbox" id="sc1" data-c="0"><label for="sc1">My campaign corrects at least one misconception from the Hour 1 poll.</label></li><li><input type="checkbox" id="sc2" data-c="0"><label for="sc2">I can explain how my thinking about vaping has changed since Hour 1.</label></li><li><input type="checkbox" id="sc3" data-c="0"><label for="sc3">I can name at least two influences on young people's views (such as peers, social media, advertising or family) and show how our campaign responds to them.</label></li></ul>
+          <p class="sc-met" id="met0" hidden>✓ Criterion met</p>
+        </div>
+        <div class="card top sc-card" style="--c:var(--s3)" data-card="1">
+          <div class="sc-head"><div class="k">Criterion 2</div><span class="sc-chip" id="chip1">0/3</span></div>
+          <h3>Family and community views</h3>
+          <ul class="sc-list"><li><input type="checkbox" id="sc4" data-c="1"><label for="sc4">Our campaign includes at least one idea or prevention strategy from the adults we interviewed.</label></li><li><input type="checkbox" id="sc5" data-c="1"><label for="sc5">I can explain how a family or community perspective changed our campaign.</label></li><li><input type="checkbox" id="sc6" data-c="1"><label for="sc6">Our message is respectful of the different families and cultures in our school community.</label></li></ul>
+          <p class="sc-met" id="met1" hidden>✓ Criterion met</p>
+        </div>
+        <div class="card top sc-card" style="--c:var(--s5)" data-card="2">
+          <div class="sc-head"><div class="k">Criterion 3</div><span class="sc-chip" id="chip2">0/4</span></div>
+          <h3>Communicating to our audience</h3>
+          <ul class="sc-list"><li><input type="checkbox" id="sc7" data-c="2"><label for="sc7">Our main message is clear and suits our target audience.</label></li><li><input type="checkbox" id="sc8" data-c="2"><label for="sc8">Every fact in our campaign comes from a credible source.</label></li><li><input type="checkbox" id="sc9" data-c="2"><label for="sc9">Our message is non-judgemental and gives a practical action or a place to get help.</label></li><li><input type="checkbox" id="sc10" data-c="2"><label for="sc10">We used peer feedback to improve our campaign before presenting it.</label></li></ul>
+          <p class="sc-met" id="met2" hidden>✓ Criterion met</p>
+        </div>
+        </div>
+        <p class="sc-done" id="scDone" hidden>All three success criteria met. You're ready for the showcase!</p>
+      </div>
+    </div>
+  </section>
 </div>
 
 <!-- ================= MEASURING IMPACT ================= -->
@@ -564,6 +701,7 @@ footer .in{padding-block:22px;font-size:14px;color:var(--muted);display:flex;fle
       <p>Australian Government Department of Education. (n.d.). <em>Family–School Partnerships Framework</em>. https://www.education.gov.au/supporting-family-school-community-partnerships-learning/family-school-partnerships/family-school-partnerships-framework</p>
       <p>Australian Government Department of Health, Disability and Ageing. (2024). <em>Australian secondary school students alcohol and drug survey</em>. https://www.health.gov.au/resources/collections/australian-secondary-school-students-alcohol-and-drug-survey</p>
       <p>Berti, S., Grazia, V., &amp; Molinari, L. (2023). Active student participation in whole-school interventions in secondary school: A systematic literature review. <em>Educational Psychology Review, 35</em>, Article 52. https://doi.org/10.1007/s10648-023-09773-x</p>
+      <p>CAST. (2018). <em>Universal Design for Learning guidelines version 2.2</em>. http://udlguidelines.cast.org</p>
       <p>Department of Education and Training Victoria. (2021). <em>Framework for Improving Student Outcomes (FISO 2.0): Evidence base</em>. State of Victoria. https://www2.education.vic.gov.au/pal/fiso/resources <span class="flag">Cited in a draft section</span></p>
       <p>Donaldson, C. D., Stupplebeen, D. A., Fecho, C. L., Ta, T., Zhang, X., &amp; Williams, R. J. (2022). Nicotine vaping for relaxation and coping: Race/ethnicity differences and social connectedness mechanisms. <em>Addictive Behaviors, 132</em>, Article 107365. https://doi.org/10.1016/j.addbeh.2022.107365</p>
       <p>Education Council. (2018). <em>Australian Student Wellbeing Framework</em>. Education Services Australia. https://studentwellbeinghub.edu.au/media/vdkkg4eg/aswf_booklet.pdf <span class="flag">Cited in a draft section</span></p>
@@ -636,8 +774,28 @@ footer .in{padding-block:22px;font-size:14px;color:var(--muted);display:flex;fle
     start=Date.now(); tick();
     timer=setInterval(tick,100);
   });
+  // Success criteria self-check
+  var boxes=[].slice.call(document.querySelectorAll('.sc-list input'));
+  function scUpdate(){
+    var done=0;
+    [0,1,2].forEach(function(i){
+      var mine=boxes.filter(function(b){return b.dataset.c==String(i);});
+      var c=mine.filter(function(b){return b.checked;}).length; done+=c;
+      document.getElementById('chip'+i).textContent=c+'/'+mine.length;
+      var met=c===mine.length;
+      document.querySelector('[data-card="'+i+'"]').classList.toggle('met',met);
+      document.getElementById('met'+i).hidden=!met;
+    });
+    document.getElementById('scBar').style.width=(done/boxes.length*100)+'%';
+    document.getElementById('scTotal').textContent=done+' of '+boxes.length+' ticked';
+    document.getElementById('scDone').hidden=done!==boxes.length;
+    try{localStorage.setItem('db-sc',JSON.stringify(boxes.map(function(b){return b.checked;})));}catch(e){}
+  }
+  try{var saved=JSON.parse(localStorage.getItem('db-sc')||'null'); if(saved) saved.forEach(function(v,i){if(boxes[i]) boxes[i].checked=!!v;});}catch(e){}
+  boxes.forEach(function(b){b.addEventListener('change',scUpdate);});
+  document.getElementById('scReset').addEventListener('click',function(){boxes.forEach(function(b){b.checked=false;});scUpdate();});
+  scUpdate();
 })();
 </script>
 
-</body>
-</html>
+</body></html>
