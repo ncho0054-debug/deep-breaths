@@ -1,0 +1,643 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Deep Breaths</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&display=swap">
+<style>
+/* Layout: sticky top nav, image banner per page, then full-width colour bands with a centred 1040px column; pages switch by #hash */
+:root{
+  --bg:#f4f8f9; --surface:#ffffff; --band:#e6f1f3; --fg:#17262d; --muted:#53666f; --line:#d3e1e5;
+  --accent:#1b6f80; --hero:#0f3d4a; --hero-fg:#eaf6f8; --hero-muted:#a9cdd5;
+  --draft:#fff5da; --draft-line:#d9b443; --draft-fg:#5f4a0c;
+  --s1:#2a9d8f; --s2:#3a7cc2; --s3:#5b6fd1; --s4:#7357b3; --s5:#d9622b;
+  --display:"Bricolage Grotesque","Segoe UI",system-ui,sans-serif;
+  --body:"Atkinson Hyperlegible","Segoe UI",system-ui,sans-serif;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0e171b; --surface:#152228; --band:#132a31; --fg:#e3eef1; --muted:#9fb4bc; --line:#284049;
+  --accent:#62c3d4; --hero:#0a2d37; --hero-fg:#eaf6f8; --hero-muted:#93c0ca;
+  --draft:#352d13; --draft-line:#8f7526; --draft-fg:#f0dc9a;
+  --s1:#4cc1b2; --s2:#6aa6e6; --s3:#8d9cf0; --s4:#a68be0; --s5:#f08a55; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0e171b; --surface:#152228; --band:#132a31; --fg:#e3eef1; --muted:#9fb4bc; --line:#284049;
+  --accent:#62c3d4; --hero:#0a2d37; --hero-fg:#eaf6f8; --hero-muted:#93c0ca;
+  --draft:#352d13; --draft-line:#8f7526; --draft-fg:#f0dc9a;
+  --s1:#4cc1b2; --s2:#6aa6e6; --s3:#8d9cf0; --s4:#a68be0; --s5:#f08a55; color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--fg);font-family:var(--body);font-size:17px;line-height:1.6}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:30;background:var(--surface)}
+h1,h2,h3,h4{font-family:var(--display);line-height:1.15;text-wrap:balance;margin:0}
+p{margin:0}
+ul{margin:0;padding-left:22px}
+a{color:var(--accent)}
+.in{max-width:1040px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+
+.nav{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:var(--surface);border-bottom:1px solid var(--line)}
+.nav .in{display:flex;align-items:center;gap:18px;padding-block:10px;flex-wrap:wrap}
+.brand{font-family:var(--display);font-weight:800;font-size:19px;color:var(--fg);text-decoration:none;display:flex;align-items:center;gap:8px}
+.brand i{width:14px;height:14px;border-radius:50%;border:3px solid var(--accent);display:inline-block}
+.links{display:flex;flex-wrap:wrap;gap:2px;margin-left:auto}
+.links a{font-size:15px;text-decoration:none;color:var(--muted);padding:6px 9px;border-radius:6px;position:relative}
+.links a[aria-current="page"]{color:var(--accent);font-weight:700;box-shadow:inset 0 -2px 0 var(--accent);border-radius:0}
+.links a:hover,.links a:focus-visible{color:var(--fg);outline:none;background:var(--band)}
+.links a.has-draft::after{content:"";position:absolute;top:5px;right:2px;width:6px;height:6px;border-radius:50%;background:var(--draft-line)}
+a:focus-visible,button:focus-visible,summary:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+
+.hero{background:var(--hero);color:var(--hero-fg);overflow:hidden}
+.hero .in{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(0,1fr);gap:32px;align-items:center;padding-block:56px}
+.hero h1{margin-top:8px;display:flex;flex-direction:column;gap:10px}
+.hero h1 .title{font-size:clamp(56px,10vw,112px);font-weight:800;letter-spacing:-.025em;line-height:.95;background:linear-gradient(100deg,#eaf6f8 0%,#7fd3df 55%,#4cc1b2 100%);-webkit-background-clip:text;background-clip:text;color:transparent}
+.hero h1 .sub{font-size:clamp(20px,2.6vw,28px);font-weight:500;color:var(--hero-muted);letter-spacing:.005em;line-height:1.25}
+.hero p.lead{font-size:20px;color:var(--hero-muted);margin-top:16px;max-width:36ch}
+.cta{display:flex;flex-wrap:wrap;gap:10px;margin-top:26px}
+.btn{display:inline-block;font:700 16px var(--body);text-decoration:none;padding:11px 20px;border-radius:8px;background:var(--hero-fg);color:var(--hero)}
+.btn.ghost{background:transparent;color:var(--hero-fg);box-shadow:inset 0 0 0 2px var(--hero-muted)}
+.station{display:flex;flex-direction:column;align-items:center;gap:14px;text-align:center}
+.station .st-label{font-size:13px;letter-spacing:.1em;text-transform:uppercase;font-weight:700;color:var(--hero-muted)}
+.breath{position:relative;aspect-ratio:1;max-width:280px;width:100%;margin:0 auto;display:grid;place-items:center}
+.breath .prog{position:absolute;inset:0;border-radius:50%;background:conic-gradient(#7fd3df calc(var(--p,0)*1turn),rgba(169,205,213,.18) 0);-webkit-mask:radial-gradient(farthest-side,transparent calc(100% - 6px),#000 calc(100% - 5px));mask:radial-gradient(farthest-side,transparent calc(100% - 6px),#000 calc(100% - 5px))}
+.breath .ring{position:absolute;inset:10%;border-radius:50%;border:2px solid var(--hero-muted);opacity:.4}
+.breath .orb{width:58%;aspect-ratio:1;border-radius:50%;background:radial-gradient(circle at 35% 35%,#7fd3df,#2a9d8f 60%,#1b6f80);display:grid;place-items:center;color:#06252d;font:800 19px var(--display);line-height:1.2;padding:8px;transform:scale(.82)}
+.breath .orb b{display:block;font-size:30px}
+.station .count{font-size:15px;color:var(--hero-muted);min-height:1.6em;font-variant-numeric:tabular-nums}
+.station button{font:700 16px var(--body);padding:10px 20px;border-radius:8px;border:0;cursor:pointer;background:var(--hero-fg);color:var(--hero)}
+.station button.stop{background:transparent;color:var(--hero-fg);box-shadow:inset 0 0 0 2px var(--hero-muted)}
+@media (prefers-reduced-motion:no-preference){
+  .breath:not(.running) .orb{animation:breathe 8s ease-in-out infinite}
+  .breath:not(.running) .ring{animation:ring 8s ease-in-out infinite}
+  .breath.running .orb{transition:transform 4s ease-in-out}
+  .breath.running.in .orb{transform:scale(1.12)}
+}
+@keyframes breathe{0%,100%{transform:scale(.82)}50%{transform:scale(1.12)}}
+@keyframes ring{0%,100%{transform:scale(.9);opacity:.25}50%{transform:scale(1.05);opacity:.6}}
+
+.phead{background:var(--hero) url("banner-pages.jpg") center/cover no-repeat;color:var(--hero-fg)}
+.phead .in{padding-block:48px}
+.phead h1{font-size:clamp(32px,4.6vw,50px);font-weight:800;margin-top:6px}
+.phead p{color:var(--hero-muted);max-width:60ch;margin-top:10px;font-size:18px}
+.eyebrow{font-size:13px;letter-spacing:.1em;text-transform:uppercase;font-weight:700;color:var(--muted)}
+.phead .eyebrow,.hero .eyebrow{color:var(--hero-muted)}
+
+.band{padding-block:52px}
+.band.alt{background:var(--band)}
+.band h2{font-size:clamp(26px,3.4vw,34px);margin-bottom:14px}
+.prose{max-width:70ch;display:flex;flex-direction:column;gap:14px}
+.stack{display:flex;flex-direction:column;gap:22px}
+.grid{display:grid;gap:18px}
+.g4{grid-template-columns:repeat(4,minmax(0,1fr))}
+.g3{grid-template-columns:repeat(3,minmax(0,1fr))}
+.g2{grid-template-columns:repeat(2,minmax(0,1fr))}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:22px;display:flex;flex-direction:column;gap:10px;min-width:0}
+.card h3{font-size:20px}
+.card .k{font-size:13px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--c,var(--accent))}
+.card.top{border-top:5px solid var(--c,var(--accent))}
+.card .more{margin-top:auto;font-weight:700;text-decoration:none}
+.card .so{font-style:italic;color:var(--muted)}
+.facts{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:18px}
+.fact{border-left:3px solid var(--accent);padding-left:14px;display:flex;flex-direction:column;gap:4px}
+.fact b{font-family:var(--display);font-size:30px;line-height:1.1;font-variant-numeric:tabular-nums}
+.fact span{color:var(--muted);font-size:15px}
+.flow{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-top:4px}
+.flow a,.flow span.st{font-weight:700;font-size:15px;padding:6px 14px;border-radius:999px;color:#fff;text-decoration:none;background:var(--c)}
+.flow i{font-style:normal;color:var(--muted)}
+.steps{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;counter-reset:s}
+.steps div{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:14px;display:flex;flex-direction:column;gap:4px;min-width:0}
+.steps div::before{counter-increment:s;content:counter(s);width:28px;height:28px;border-radius:50%;background:var(--s4);color:#fff;display:grid;place-items:center;font:800 14px var(--display)}
+.steps b{font-family:var(--display);font-size:17px}
+.steps span{font-size:14px;color:var(--muted)}
+
+.block-head{display:flex;flex-wrap:wrap;align-items:baseline;gap:6px 14px;border-bottom:3px solid var(--c);padding-bottom:10px;margin-bottom:6px}
+.block-head h2{margin:0;color:var(--fg)}
+.block-head span{font-size:14px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--c)}
+.progress{color:var(--muted);font-size:17px;margin-bottom:18px;max-width:70ch}
+.act{background:var(--surface);border:1px solid var(--line);border-left:5px solid var(--c);border-radius:10px;padding:18px 22px;display:grid;grid-template-columns:86px minmax(0,1fr);gap:4px 16px}
+.act .hr{font:800 13px var(--body);letter-spacing:.06em;text-transform:uppercase;color:var(--c);padding-top:4px}
+.act .bd{display:flex;flex-direction:column;gap:8px;min-width:0}
+.act .bd > *{max-width:68ch}
+.act h3{font-size:20px}
+.act.assess{border:2px solid var(--c);border-left-width:5px;background:color-mix(in srgb,var(--c) 7%,var(--surface))}
+.assess-tag{align-self:flex-start;display:inline-flex;align-items:center;gap:6px;background:var(--c);color:#fff;border-radius:999px;padding:3px 12px;font-size:13px;font-weight:700;letter-spacing:.04em;text-transform:uppercase}
+.assess-tag::before{content:"✓";font-size:12px}
+.focus{font-size:14px;color:var(--muted)}
+.focus b{color:var(--fg)}
+.acts{display:flex;flex-direction:column;gap:12px}
+.checks{list-style:none;padding:0;display:flex;flex-direction:column;gap:10px}
+.checks li{display:grid;grid-template-columns:26px minmax(0,1fr);gap:10px;align-items:start}
+.checks li::before{content:"✓";width:26px;height:26px;border-radius:50%;background:var(--s1);color:#fff;display:grid;place-items:center;font-weight:700;font-size:14px}
+
+.tw{overflow-x:auto;border:1px solid var(--line);border-radius:10px;background:var(--surface)}
+table{border-collapse:collapse;width:100%;min-width:620px;font-size:15px}
+th,td{padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
+th{background:var(--band);font-family:var(--display)}
+tr:last-child td{border-bottom:0}
+code{font:700 14px var(--body);color:var(--accent)}
+
+.draft{border:2px dashed var(--draft-line);border-radius:12px;padding:18px;background:repeating-linear-gradient(135deg,transparent 0 14px,color-mix(in srgb,var(--draft) 55%,transparent) 14px 28px);display:flex;flex-direction:column;gap:16px}
+.draft-tag{align-self:flex-start;background:var(--draft);color:var(--draft-fg);border:1px solid var(--draft-line);border-radius:999px;padding:3px 12px;font-size:13px;font-weight:700;letter-spacing:.02em}
+.flag{display:inline-block;background:var(--draft);color:var(--draft-fg);border:1px solid var(--draft-line);border-radius:999px;padding:0 9px;font-size:12px;font-weight:700;vertical-align:middle;margin-left:6px}
+.refs p{padding-left:2em;text-indent:-2em;font-size:15px}
+.refs{gap:10px}
+footer{border-top:1px solid var(--line);background:var(--surface)}
+footer .in{padding-block:22px;font-size:14px;color:var(--muted);display:flex;flex-wrap:wrap;gap:8px 24px;justify-content:space-between;align-items:center}
+.legend{display:flex;align-items:center;gap:8px}
+.legend i{width:8px;height:8px;border-radius:50%;background:var(--draft-line);display:inline-block}
+
+@media (max-width:880px){
+  .hero .in{grid-template-columns:minmax(0,1fr);padding-block:40px}
+  .breath{max-width:200px}
+  .g4,.g3,.facts,.steps{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .links{margin-left:0;width:100%}
+}
+@media (max-width:540px){
+  .g4,.g3,.g2,.facts,.steps{grid-template-columns:minmax(0,1fr)}
+  .act{grid-template-columns:minmax(0,1fr)}
+}
+</style>
+</head>
+<body>
+
+
+<nav class="nav" aria-label="Site">
+  <div class="in">
+    <a class="brand" href="#home"><i></i>Deep Breaths</a>
+    <div class="links" id="links">
+      <a href="#home">Home</a>
+      <a href="#why">Why Vaping Matters</a>
+      <a href="#approach" class="has-draft">Our Approach</a>
+      <a href="#wellbeing">Teaching for Wellbeing</a>
+      <a href="#journey">Learning Journey</a>
+      <a href="#curriculum" class="has-draft">Curriculum</a>
+      <a href="#action">Learning to Action</a>
+      <a href="#impact">Measuring Impact</a>
+      <a href="#references">References</a>
+    </div>
+  </div>
+</nav>
+
+<!-- ================= HOME ================= -->
+<div class="view" id="v-home">
+  <header class="hero">
+    <div class="in">
+      <div>
+        <div class="eyebrow">Year 10 · Sunrise School · 10-hour learning journey</div>
+        <h1><span class="title">Deep Breaths</span><span class="sub">Vaping Prevention in Schools</span></h1>
+        <div class="cta">
+          <a class="btn" href="#journey">See the 10-Hour Journey</a>
+          <a class="btn ghost" href="#why">Why Vaping Matters</a>
+        </div>
+      </div>
+      <div class="station" id="station">
+        <div class="st-label">Breathing station</div>
+        <div class="breath" id="breath">
+          <div class="prog" id="prog"></div>
+          <div class="ring"></div>
+          <div class="orb" id="orb" aria-live="polite">Take a<br>deep breath</div>
+        </div>
+        <div class="count" id="count">30 seconds · breathe in for 4, out for 4</div>
+        <button type="button" id="breathBtn">Start 30-second breathing</button>
+      </div>
+    </div>
+  </header>
+
+  <section class="band">
+    <div class="in prose">
+      <h2>From Awareness to Action</h2>
+      <p>Vaping prevention in schools can easily become a one-way message. Students are given the facts and expected to make better choices. However, young people are also influenced by what they see online, what they hear from peers, and the messages they receive from family.</p>
+      <p>Deep Breaths takes a more active approach to vaping prevention for Year 10 students at Sunrise School.</p>
+    </div>
+  </section>
+
+  <section class="band alt">
+    <div class="in prose">
+      <h2>Our Approach</h2>
+      <p>Across a 10-hour learning journey, students move through five stages:</p>
+      <div class="flow">
+        <a href="#journey" style="--c:var(--s1)">Understand</a><i>→</i>
+        <a href="#journey" style="--c:var(--s2)">Question</a><i>→</i>
+        <a href="#journey" style="--c:var(--s3)">Connect</a><i>→</i>
+        <a href="#journey" style="--c:var(--s4)">Co-design</a><i>→</i>
+        <a href="#journey" style="--c:var(--s5)">Create</a>
+      </div>
+      <p>Students begin by exploring what they already know about vaping and identifying common misconceptions. They then investigate misinformation, consider the social and digital influences around them, and connect their learning with family and community perspectives.</p>
+    </div>
+  </section>
+</div>
+
+<!-- ================= WHY VAPING MATTERS ================= -->
+<div class="view" id="v-why" hidden>
+  <header class="phead"><div class="in"><div class="eyebrow">The issue</div><h1>Why Vaping Matters</h1><p>Why vaping is a priority for Year 10 students, what drives it, and why schools need to respond.</p></div></header>
+  <section class="band">
+    <div class="in facts">
+      <div class="fact"><b>30%</b><span>of Australian secondary students have tried vaping (Scully et al., 2023)</span></div>
+      <div class="fact"><b>22.1%</b><span>of 16–17-year-old students have vaped in the last month (Australian Government Department of Health, Disability and Ageing, 2024)</span></div>
+      <div class="fact"><b>5.3% → 21%</b><span>increase in vaping among 18–24-year-olds from 2019 to 2023, just after students leave school</span></div>
+      <div class="fact"><b>10 hours</b><span>of a learning journey to begin</span></div>
+    </div>
+  </section>
+  <section class="band alt">
+    <div class="in">
+      <h2>What Drives Vaping in Year 10?</h2>
+      <div class="grid g4">
+        <div class="card top" style="--c:var(--s2)"><h3>Peers</h3><p>Vaping is often a social activity, and vapes are commonly sourced through friends. Peer pressure is a common starting point.</p></div>
+        <div class="card top" style="--c:var(--s3)"><h3>Social Media and Marketing</h3><p>Engaging with vaping content online is linked to more positive attitudes and lower perceived risk (Rutherford et al., 2023).</p></div>
+        <div class="card top" style="--c:var(--s4)"><h3>Stress and Coping</h3><p>Older students may use vaping to relieve stress, anxiety or boredom. It is linked to weaker school and family connectedness (Donaldson et al., 2022).</p></div>
+        <div class="card top" style="--c:var(--s5)"><h3>Misconceptions</h3><p>Many students believe vaping has no harmful effects, which increases their susceptibility (Pettigrew et al., 2023).</p></div>
+      </div>
+    </div>
+  </section>
+  <section class="band">
+    <div class="in grid g2" style="align-items:start">
+      <div class="prose"><h2>Health Impacts</h2><p>Nicotine affects the adolescent brain while it is still developing, with lasting effects on attention and emotional regulation (Goriounova &amp; Mansvelder, 2012). Vaping is also linked to asthma (Li et al., 2022), as well as to higher depression, anxiety and stress and lower academic self-efficacy (Novak et al., 2024).</p></div>
+      <div class="prose"><h2>Why Schools Must Respond</h2><p>46% of Australian teachers see a student vaping at least once a month, yet only 51% say their school has clear vaping policies (Jongenelis &amp; Robinson, 2023). School responses are often ad hoc, and students, parents and staff want age-appropriate curriculum and greater family and community involvement (Thomas et al., 2024).</p></div>
+    </div>
+  </section>
+</div>
+
+<!-- ================= OUR APPROACH ================= -->
+<div class="view" id="v-approach" hidden>
+  <header class="phead"><div class="in"><div class="eyebrow">Research and frameworks</div><h1>Our Approach</h1></div></header>
+  <section class="band">
+    <div class="in prose">
+      <h2>What Guides the Project Design</h2>
+      <p>The Year 10 vaping prevention project is guided by three connected approaches: Teaching for Wellbeing; Student Voice, Agency and Co-Design; and Family–School Partnerships. Together, these approaches move the project beyond simply telling students about the risks of vaping. Instead, students actively investigate the issue, contribute their perspectives, make decisions and apply their learning to a real health and wellbeing concern.</p>
+    </div>
+  </section>
+  <section class="band alt">
+    <div class="in grid g2" style="align-items:start">
+      <div class="prose">
+        <div class="eyebrow">HIWS Framework</div>
+        <h2>HIWS 6: Engage Students</h2>
+        <p>The High Impact Wellbeing Strategies (HIWS) were developed by the Victorian Department of Education from evidence about teaching practices that can support student wellbeing (Allen et al., 2022). They are designed to help teachers embed wellbeing into everyday classroom practice and support a whole-school approach to wellbeing and Tier 1 prevention.</p>
+        <p>In the Deep Breaths project, this means students do more than receive information about vaping. They investigate misconceptions, question social media messages, explore the influences that shape young people's choices, and contribute ideas to the final prevention resource.</p>
+      </div>
+      <div class="card top" style="--c:var(--s1)">
+        <div class="k">Learn more</div>
+        <h3>High Impact Wellbeing Strategies</h3>
+        <p>See how HIWS 6 shapes the way students learn throughout the project.</p>
+        <a class="more" href="#wellbeing">Teaching for Wellbeing →</a>
+        <a class="more" href="https://www.education.vic.gov.au/school/teachers/teachingresources/practice/improve/Pages/High-impact-wellbeing-strategies.aspx" target="_blank" rel="noopener">Learn more about HIWS 6 ↗</a>
+      </div>
+    </div>
+  </section>
+  <section class="band">
+    <div class="in">
+      <h2>What Does Existing Research Tell Us?</h2>
+      <div class="grid g3">
+        <div class="card top" style="--c:var(--s2)"><div class="k">Gardner et al., 2024</div><h3>Knowledge &amp; Intentions</h3><p>A review by Gardner et al. (2024) found mixed evidence that school-based vaping programs reduce vaping over time. The programs were more effective in improving students' knowledge and attitudes around vaping.</p><p class="so">This supports a focus on building students' knowledge and decision-making skills.</p><a class="more" href="https://doi.org/10.1007/s11121-024-01730-6" target="_blank" rel="noopener">Read the Study ↗</a></div>
+        <div class="card top" style="--c:var(--s4)"><div class="k">Gardner et al., 2025</div><h3>Student Feedback and Relevance</h3><p>The Australian OurFutures Vaping program involved young people in developing the characters and storylines. Feedback from students and teachers during later testing led to changes in lesson length, storyline relevance and supporting resources.</p><p class="so">This shows how student feedback can help make prevention education more relevant and appropriate for the young people it is designed for.</p><a class="more" href="https://doi.org/10.1093/heapro/daaf085" target="_blank" rel="noopener">Read the Study ↗</a></div>
+        <div class="card top" style="--c:var(--s3)"><div class="k">Berti et al., 2023</div><h3>Participation and Decision-Making</h3><p>Student participation in whole-school initiatives can vary from students being passive recipients of information to taking more active roles in decision-making.</p><p class="so">This supports giving students meaningful opportunities to investigate issues, contribute their perspectives and apply what they have learned.</p><a class="more" href="https://doi.org/10.1007/s10648-023-09773-x" target="_blank" rel="noopener">Read the Study ↗</a></div>
+        <div class="card top" style="--c:var(--s5)"><div class="k">Livingston et al., 2022</div><h3>Physical and Mental Health Effects</h3><p>The review analysed 18 studies and found associations between vaping and respiratory problems, oral health problems and nicotine dependence. It also identified links between vaping, depression and suicidal ideation, although the authors note that much of the evidence is observational and cannot establish direct causation.</p><p class="so">This paper shows why vaping should be treated as a health and wellbeing issue, rather than only a behavioural or disciplinary problem. It supports combining vaping prevention with mental health education and wellbeing support.</p><a class="more" href="https://doi.org/10.1016/j.pedn.2022.01.006" target="_blank" rel="noopener">Read the Study ↗</a></div>
+        <div class="card top" style="--c:var(--s3)"><div class="k">Rutherford et al., 2023</div><h3>Social Media Content Influence</h3><p>Reviewing 32 studies involving more than 274,000 young people, the authors found that exposure to vaping-related social media content was associated with more positive attitudes towards vaping, lower perceptions of harm, and greater vaping use or susceptibility.</p><p class="so">This supports teaching students about the commercial and social determinants of vaping. A school program should not only explain health risks, but also develop students' media literacy so they can critically examine influencers, advertising, flavours and online vaping content.</p><a class="more" href="https://doi.org/10.1016/j.addbeh.2023.107828" target="_blank" rel="noopener">Read the Study ↗</a></div>
+        <div class="card top" style="--c:var(--s1)"><div class="k">Jongenelis &amp; Robinson, 2023</div><h3>Australian Secondary Schools and Educators</h3><p>In a survey of 218 secondary school staff, 46% reported encountering a student with an e-cigarette at least monthly, while only around half reported having a specific school vaping policy. Teachers also described difficulties detecting vaping devices and a need for stronger educational resources. Punitive approaches such as suspension and expulsion were commonly reported.</p><p class="so">This paper directly informs our whole-school approach. It demonstrates that inconsistent policies and punishment alone are insufficient, and supports clearer school policies, staff professional learning, prevention education and supportive intervention for students who vape.</p><a class="more" href="https://doi.org/10.18332/tid/161025" target="_blank" rel="noopener">Read the Study ↗</a></div>
+      </div>
+    </div>
+  </section>
+  <section class="band alt">
+    <div class="in stack">
+      <div class="prose">
+        <div class="eyebrow">Family–School Partnerships</div>
+        <h2>Overview of Partnership</h2>
+        <p>The Family–School Partnerships Framework provides a practical guide of suggested strategies for building and improving partnerships between schools and families. It is organised around seven key dimensions, each with its own set of strategies.</p>
+      </div>
+      <div class="grid g3">
+        <div class="card top" style="--c:var(--s3)"><h3>Communication</h3><p>The communication dimension focuses on building constructive relationships through welcoming communication. Strategies include welcoming signage to promote inclusion, involving families in learning activities, involving families in setting and reviewing student goals throughout the year, and communicating information that helps families support learning and wellbeing.</p><a class="more" href="https://www.education.gov.au/node/7829" target="_blank" rel="noopener">The Framework ↗</a></div>
+        <div class="card top" style="--c:var(--s3)"><h3>Connecting Learning at Home and School</h3><p>This dimension recognises that valuable learning can happen at home and in the community. Strategies include drawing on the interests of students and families outside school, providing videos or photos of classroom learning to families, and providing information to help home-based learning.</p><a class="more" href="https://www.education.gov.au/node/7829" target="_blank" rel="noopener">The Framework ↗</a></div>
+        <div class="card top" style="--c:var(--s3)"><h3>Recognise the Role of the Family</h3><p>Parents are described as the primary educators of their children, with a lasting influence on attitude and achievement. Strategies include assessing whether current practices support family engagement, building family engagement into strategic plans, valuing families' knowledge of their child, and making school leaders visible.</p><a class="more" href="https://www.education.gov.au/node/7829" target="_blank" rel="noopener">The Framework ↗</a></div>
+      </div>
+    </div>
+  </section>
+  <section class="band">
+    <div class="in">
+      <div class="draft">
+        <div class="draft-tag">Incomplete · Draft for the group to review</div>
+        <div class="prose">
+          <h2>Student Voice, Agency &amp; Co-Design</h2>
+          <p>Victorian policy positions students as participants in decisions that affect them. The Student Voice, Agency and Leadership policy states that students should have opportunities to share their experiences, give feedback and take part in decisions affecting themselves, their peers and their school community (Victorian Department of Education, 2026). FISO 2.0 includes activating student voice, agency and leadership within its Engagement core element (Department of Education and Training Victoria, 2021), and the Australian Student Wellbeing Framework names Student Voice as one of its five elements (Education Council, 2018).</p>
+          <p>In Deep Breaths, students decide which issues the campaign addresses and what its message, tone and format will be. <a href="#wellbeing">See how student voice runs through the project →</a></p>
+        </div>
+        <div class="prose">
+          <h2>How the Three Approaches Connect</h2>
+          <p><b>Teaching for Wellbeing is how student voice happens in class.</b> HIWS 6 asks teachers to offer choice and use students' feedback. Both are forms of student voice, so engaging students and giving them a say happen together.</p>
+          <p><b>Student voice makes partnerships two-way.</b> Rather than the school simply sending information home, students lead conversations with trusted adults and bring those perspectives back into class. Families become contributors to students' thinking rather than recipients of information (Garbacz et al., 2020).</p>
+          <p><b>Partnerships give student voice a real purpose and audience.</b> Family and community input shapes students' campaigns, and the final showcase gives their work an audience beyond the classroom. That real-world relevance is itself part of HIWS 6.</p>
+          <p>Together, the three approaches respond to the drivers of vaping identified in our brief: peer norms, family connectedness and school engagement.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- ================= TEACHING FOR WELLBEING ================= -->
+<div class="view" id="v-wellbeing" hidden>
+  <header class="phead"><div class="in"><div class="eyebrow">HIWS 6 · Student voice</div><h1>Teaching for Wellbeing</h1></div></header>
+  <section class="band">
+    <div class="in prose">
+      <h2>HIWS 6: Engage Students</h2>
+      <p>High Impact Wellbeing Strategy 6: Engage Students supports learning that is relevant to students' lives and encourages active participation. Vaping is explored through situations students may encounter through peers, social media, family and the wider community.</p>
+      <p>Rather than relying on teacher-led information alone, students participate in collaborative inquiry, evaluate vaping information and misinformation, discuss different influences on health decisions and have choices in how they demonstrate their learning. This makes wellbeing part of the learning process rather than treating it as a separate topic.</p>
+    </div>
+  </section>
+  <section class="band alt">
+    <div class="in stack">
+      <div class="prose">
+        <h2>Student Voice, Agency and Co-Design</h2>
+        <p>Student voice is embedded throughout the project. Students are given opportunities to identify what they already know about vaping, recognise misconceptions and determine which issues are most relevant to Year 10 students.</p>
+        <p>Their involvement progresses through four stages:</p>
+      </div>
+      <div class="steps">
+        <div><b>Listen</b><span>Students contribute their perspectives through anonymous activities and hypothetical scenarios.</span></div>
+        <div><b>Prioritise</b><span>They prioritise the three to five vaping issues they believe are most important.</span></div>
+        <div><b>Co-Design</b><span>In groups, students decide the focus, message, tone and format of their prevention campaign.</span></div>
+        <div><b>Test and Refine</b><span>Feedback from peers, families and wellbeing staff refines the campaign before it is shared with an authentic audience.</span></div>
+      </div>
+      <div class="prose">
+        <p>This creates genuine agency because students do more than choose between teacher-created options. Their ideas influence what is investigated, how information is communicated and what the final product looks like.</p>
+      </div>
+      <div class="card top" style="--c:var(--s1);max-width:70ch">
+        <div class="k">Keeping it safe</div>
+        <p>Because vaping is a sensitive issue, students are not required to disclose their own vaping behaviour. Anonymous polls and hypothetical scenarios allow students to contribute safely while still providing meaningful perspectives.</p>
+      </div>
+    </div>
+  </section>
+  <section class="band">
+    <div class="in stack">
+      <div class="prose">
+        <h2>Learning Beyond the Classroom</h2>
+        <p>Health decisions are influenced by more than what happens during lessons. Young people encounter vaping messages and attitudes through family, peers, social media and the wider community. The project therefore creates a two-way learning relationship between school and students' lives beyond the classroom.</p>
+        <p>Students take vaping-related questions and discussion prompts outside school and gather family or community perspectives. These ideas are then brought back into the classroom and considered alongside reliable health evidence.</p>
+        <p>The process can be represented as:</p>
+      </div>
+      <div class="flow">
+        <span class="st" style="--c:var(--s1)">School</span><i>→</i>
+        <span class="st" style="--c:var(--s3)">Home</span><i>→</i>
+        <span class="st" style="--c:var(--s2)">Community</span><i>→</i>
+        <span class="st" style="--c:var(--s5)">Authentic Audience</span><i>→</i>
+        <span class="st" style="--c:var(--s1)">School</span>
+      </div>
+      <div class="prose">
+        <p>At school, students develop knowledge and critical thinking skills. At home, family members contribute their perspectives and experiences. Community and health contexts broaden students' understanding of vaping as a social and wellbeing issue. Students then use these different perspectives when making decisions about their final campaign.</p>
+        <p>This reflects the Family–School Partnerships principle of consulting families in decision-making rather than simply providing information to them. Families therefore become contributors to the learning process.</p>
+        <p>For Sunrise School, this approach is particularly valuable because the school community is culturally diverse. Consultation should therefore be inclusive and accessible so that different family and community perspectives can contribute to the project.</p>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- ================= LEARNING JOURNEY ================= -->
+<div class="view" id="v-journey" hidden>
+  <header class="phead"><div class="in"><div class="eyebrow">10 hours · three stages</div><h1>The 10-Hour Journey</h1></div></header>
+
+  <section class="band">
+    <div class="in">
+      <div class="block-head" style="--c:var(--s1)"><h2>Building Knowledge</h2><span>Hours 1–3 · Understand &amp; Question</span></div>
+      <p class="progress">Across the first three hours, students move from what they think, to what they see, and then to what influences their views.</p>
+      <div class="acts">
+        <div class="act" style="--c:var(--s1)"><div class="hr">Hour 1</div><div class="bd"><h3>What Do We Know About Vaping?</h3><p>Students begin with a short anonymous diagnostic poll exploring what they already know and believe about vaping, where they usually get their information from, and what questions they still have.</p><p>The responses help identify common misconceptions and give students some input into what the class explores next.</p><p class="focus"><b>Key focus:</b> prior knowledge, misconceptions, student voice</p></div></div>
+        <div class="act" style="--c:var(--s2)"><div class="hr">Hour 2</div><div class="bd"><h3>Sorting Facts From Misinformation</h3><p>Students work collaboratively to investigate common vaping myths and social media claims. Using credible sources, they decide whether each claim is accurate and explain the evidence behind their judgement.</p><p>This activity develops students' ability to question vaping-related information.</p><p class="focus"><b>Key focus:</b> critical evaluation, media literacy, collaborative inquiry</p></div></div>
+        <div class="act" style="--c:var(--s2)"><div class="hr">Hour 3</div><div class="bd"><h3>What Shapes Your Views on Vaping?</h3><p>Students then look more broadly at the influences that can shape young people's views of vaping, including peers, social media, advertising and family.</p><p>This activity extends beyond the classroom, encouraging students to compare different perspectives and consider how their views may be shaped by the people and information around them.</p><p class="focus"><b>Key focus:</b> social influences, self-awareness</p></div></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="band alt">
+    <div class="in">
+      <div class="block-head" style="--c:var(--s3)"><h2>Connect with Family and Community</h2><span>Hours 4–6 · Connect</span></div>
+      <p class="progress">Across Hours 4–6, students engage in research and come to understand views in the community.</p>
+      <div class="acts">
+        <div class="act" style="--c:var(--s3)"><div class="hr">Hour 4</div><div class="bd"><h3>Conduct Research with Family and Community</h3><p>Students develop a discussion prompt and bring it into the community. They are tasked with having a 5-minute discussion with two adults about what they think the impact of vaping is.</p><p>Any trusted adult is fine! A parent, mentor, sports coach or sibling is great, as long as they are an adult.</p><p class="focus"><b>Key focus:</b> critical evaluation, collaborative inquiry</p></div></div>
+        <div class="act" style="--c:var(--s3)"><div class="hr">Hour 5</div><div class="bd"><h3>Present Findings to a Family or Community Member</h3><p>Students present their findings to one of the trusted adults they interviewed. They explain their findings and what they learned from discussing the issue with the two adults.</p><p>The trusted adult suggests what they would do to prevent vaping among students from a parent, family or community perspective.</p><p class="focus"><b>Key focus:</b> analysis</p></div></div>
+        <div class="act assess" style="--c:var(--s3)"><div class="hr">Hour 6</div><div class="bd"><span class="assess-tag">Formative assessment</span><h3>Produce a Mini Report for the Teacher</h3><p>Based on the findings from their discussions with adults, students develop a mini report to bring back into the classroom. This includes observations and prevention strategies suggested by family and community.</p><p>This activity brings students' findings from the community into the classroom.</p><p class="focus"><b>Key focus:</b> social influences, self-awareness</p></div></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="band">
+    <div class="in">
+      <div class="block-head" style="--c:var(--s4)"><h2>Co-Design and Create</h2><span>Hours 7–10 · Co-design &amp; Create</span></div>
+      <p class="progress">The final stage of the 10-hour learning journey gives students increasing responsibility for applying what they have learned. Students move from understanding vaping to creating an evidence-informed prevention message for their peers.</p>
+      <div class="acts">
+        <div class="act" style="--c:var(--s4)"><div class="hr">Hour 7</div><div class="bd"><h3>Listen to Students</h3><p>Students complete a short anonymous poll and discuss hypothetical vaping scenarios involving situations such as peer pressure, stress, social media or school environments.</p><p>Rather than asking students to disclose personal vaping behaviour, the activity focuses on questions such as:</p><ul><li>Why might young people choose to vape?</li><li>What pressures might Year 10 students experience?</li><li>What information about vaping is confusing?</li><li>What prevention messages would students actually pay attention to?</li></ul></div></div>
+        <div class="act" style="--c:var(--s4)"><div class="hr">Hour 8</div><div class="bd"><h3>Co-Design the Campaign</h3><p>Students work in groups to design their vaping prevention campaign. Each group decides:</p><ul><li>the vaping issue they will focus on</li><li>the main prevention message</li><li>the intended audience</li><li>the tone of the campaign</li><li>the type of product they will create</li><li>the practical action or support message they want the audience to remember.</li></ul><p>Possible products include a poster, short video, infographic or social media-style resource.</p><p>Groups consider evidence from earlier lessons together with student, family and wellbeing perspectives. This ensures that the final campaign is both evidence-informed and relevant to the school community.</p></div></div>
+        <div class="act" style="--c:var(--s5)"><div class="hr">Hours 9–10</div><div class="bd"><h3>Test, Improve and Share</h3><p>Groups exchange their draft campaigns and conduct a peer review. Feedback considers whether the campaign:</p><ul><li>contains accurate information</li><li>is understandable for the target audience</li><li>feels relevant to young people</li><li>uses a respectful and non-judgemental message</li><li>gives students a practical action or pathway for support.</li></ul><p>Students decide which feedback to use and revise their campaign before the final presentation. <a href="#action">See Learning to Action →</a></p></div></div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- ================= CURRICULUM ================= -->
+<div class="view" id="v-curriculum" hidden>
+  <header class="phead"><div class="in"><div class="eyebrow">Victorian Curriculum · Levels 9 and 10</div><h1>Curriculum</h1><p>A curriculum-aligned approach to vaping prevention.</p></div></header>
+  <section class="band">
+    <div class="in stack">
+      <div class="prose">
+        <h2>Victorian Curriculum Connections</h2>
+        <p>The project is aligned with both Personal and Social Capability and Health and Physical Education at Levels 9 and 10. These curriculum areas support students to build the knowledge, skills and attitudes needed to make informed decisions and contribute to their own and others' wellbeing.</p>
+      </div>
+      <div class="grid g2">
+        <div class="card top" style="--c:var(--s4)">
+          <div class="k"><code>VC2P10S05</code><span class="flag">Code to verify</span></div>
+          <h3>Personal and Social Capability</h3>
+          <p><b>Individual responsibility, adaptability, and making decisions in challenging tasks</b></p>
+          <ul><li>Reflect on influences</li><li>Consider different perspectives</li><li>Make responsible and informed decisions</li><li>Adapt and respond to changes</li></ul>
+        </div>
+        <div class="card top" style="--c:var(--s1)">
+          <div class="k"><code>VC2HPP09</code><span class="flag">Code to verify</span></div>
+          <h3>Health and Physical Education</h3>
+          <p><b>Critique health information and media messaging, and evaluate their influences on health decisions and behaviours</b></p>
+          <ul><li>Evaluate health information</li><li>Examine influences on health choices</li><li>Develop strategies that support health and wellbeing</li><li>Apply learning to a real health issue</li></ul>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="band alt">
+    <div class="in prose">
+      <h2>Building Social and Emotional Capabilities</h2>
+      <p>The project supports students' social and emotional learning by giving them opportunities to reflect on influences, respond to social pressure and make informed decisions about vaping. HIWS 6 guides how students engage in the learning, while the Personal and Social Capability curriculum supports the development of skills such as self-awareness, social management and social awareness. Collectively, these elements create a clear connection between the wellbeing issue and the personal and social skills students are expected to develop.</p>
+    </div>
+  </section>
+  <section class="band">
+    <div class="in stack">
+      <div class="prose">
+        <h2>Additional Frameworks and Approaches</h2>
+        <p>This project also incorporates key whole-school and wellbeing approaches to support a comprehensive and meaningful learning experience.</p>
+      </div>
+      <div class="grid g4">
+        <div class="card top" style="--c:var(--s1)"><h3>HIWS 6: Engage Students</h3><p>Learning is active, relevant and connected to students' real-world experiences.</p><a class="more" href="https://www.education.vic.gov.au/school/teachers/teachingresources/practice/improve/Pages/High-impact-wellbeing-strategies.aspx" target="_blank" rel="noopener">Learn More ↗</a></div>
+        <div class="card top" style="--c:var(--s2)"><h3>Teaching for Wellbeing</h3><p>Integrates wellbeing within the curriculum to support positive learning and health outcomes.</p><a class="more" href="#wellbeing">Learn More →</a></div>
+        <div class="card top" style="--c:var(--s3)"><h3>Family and Community Partnerships</h3><p>Involves family and community perspectives to broaden understanding and strengthen relevance.</p><a class="more" href="#approach">Learn More →</a></div>
+        <div class="card top" style="--c:var(--s4)"><h3>Co-Design</h3><p>Students shape the focus, message, tone and format of their campaign, using feedback from peers and families. <span class="flag">Draft</span></p><a class="more" href="#wellbeing">Learn More →</a></div>
+      </div>
+    </div>
+  </section>
+  <section class="band alt">
+    <div class="in">
+      <div class="draft">
+        <div class="draft-tag">Incomplete · Draft for the group to review</div>
+        <div class="prose"><h2>How It All Connects</h2><p>Each stage of the journey builds a different part of the curriculum, through one or more of the project's approaches.</p></div>
+        <div class="tw"><table>
+          <tr><th>Stage</th><th>Hours</th><th>Personal and Social Capability</th><th>Health and Physical Education</th><th>Approach</th></tr>
+          <tr><td><b>Understand</b></td><td>1</td><td>Reflect on influences on their own thinking</td><td>Examine influences on health choices</td><td>Student voice (anonymous poll)</td></tr>
+          <tr><td><b>Question</b></td><td>2–3</td><td>Consider different perspectives</td><td>Evaluate health information and media messages</td><td>HIWS 6 (collaborative inquiry)</td></tr>
+          <tr><td><b>Connect</b></td><td>4–6</td><td>Consider different perspectives</td><td>Examine influences on health choices</td><td>Family and community partnerships</td></tr>
+          <tr><td><b>Co-design</b></td><td>7–9</td><td>Make responsible and informed decisions</td><td>Develop strategies that support health and wellbeing</td><td>Student voice and co-design</td></tr>
+          <tr><td><b>Create</b></td><td>10</td><td>Adapt and respond to feedback</td><td>Apply learning to a real health issue</td><td>All three approaches</td></tr>
+        </table></div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- ================= LEARNING TO ACTION ================= -->
+<div class="view" id="v-action" hidden>
+  <header class="phead"><div class="in"><div class="eyebrow">Culminating task</div><h1>Learning to Action</h1></div></header>
+  <section class="band">
+    <div class="in prose">
+      <h2>Success Criteria</h2>
+      <ul class="checks">
+        <li>Students' final product demonstrates engagement with prior knowledge and shows reflection on what shapes students' views.</li>
+        <li>Students' final product shows engagement with the views of family and community.</li>
+        <li>Students' final product demonstrates the ability to communicate a message to the target audience through a campaign.</li>
+      </ul>
+    </div>
+  </section>
+  <section class="band alt">
+    <div class="in grid g3">
+      <div class="card top" style="--c:var(--s4)"><div class="k">What students create</div><p>A vaping prevention campaign co-designed in small groups of 2–3.</p><p>It can be presented in a format of the students' choice, such as a poster, short video, infographic or social media post.</p></div>
+      <div class="card top" style="--c:var(--s3)"><div class="k">Who it's for</div><p>Middle school students, families, wellbeing staff and community partners.</p></div>
+      <div class="card top" style="--c:var(--s5)"><div class="k">What happens</div><p>Teams present their campaign and explain the decisions that informed it. The campaign should communicate a perspective based on personal convictions and the family and community beliefs explored throughout the learning journey.</p><p>The initial audience (the class) gives feedback on each campaign.</p></div>
+    </div>
+  </section>
+</div>
+
+<!-- ================= MEASURING IMPACT ================= -->
+<div class="view" id="v-impact" hidden>
+  <header class="phead"><div class="in"><div class="eyebrow">Evaluation</div><h1>Measuring Impact</h1></div></header>
+  <section class="band">
+    <div class="in prose">
+      <h2>How We Will Know It Made a Difference</h2>
+      <p>The project will be evaluated at three stages across the 10-hour learning journey. The aim is to identify changes in students' misconceptions, confidence in evaluating vaping information, and ability to make informed decisions.</p>
+    </div>
+  </section>
+  <section class="band alt">
+    <div class="in grid g3" style="align-items:start">
+      <div class="card top" style="--c:var(--s1)">
+        <div class="k">1 · Before the project</div>
+        <h3>Diagnostic Survey</h3>
+        <p>Students complete a short anonymous survey at the beginning of the project. The survey establishes a baseline by exploring:</p>
+        <ul><li>what students already know about vaping</li><li>common misconceptions</li><li>where students get their information</li><li>how confident they feel judging whether vaping information is reliable</li><li>how confident they feel making informed health decisions.</li></ul>
+        <p>The results help identify what students already understand and what needs more attention during the project.</p>
+      </div>
+      <div class="card top" style="--c:var(--s4)">
+        <div class="k">2 · During the project</div>
+        <h3>Product Evaluation</h3>
+        <p>Students' final vaping prevention resource will provide evidence of how well they can apply what they have learned. The resource can be evaluated using criteria such as:</p>
+        <ul><li>accuracy of health information</li><li>use of credible evidence</li><li>ability to address misconceptions</li><li>consideration of different influences and perspectives</li><li>relevance to a Year 10 audience</li><li>clarity and usefulness of the prevention message.</li></ul>
+        <p>This provides evidence of students' ability to move from simply knowing information to applying it in a meaningful context.</p>
+      </div>
+      <div class="card top" style="--c:var(--s5)">
+        <div class="k">3 · After the project</div>
+        <h3>Post-Survey</h3>
+        <p>At the end of the 10-hour learning journey, students complete a post-survey using similar questions to the diagnostic survey. Comparing the two surveys can show changes in:</p>
+        <ul><li>vaping-related knowledge</li><li>misconceptions</li><li>awareness of social and media influences</li><li>confidence in making informed decisions.</li></ul>
+      </div>
+    </div>
+  </section>
+  <section class="band">
+    <div class="in prose">
+      <h2>What Will Success Look Like?</h2>
+      <p>Success will not be measured by whether students immediately stop vaping, or by whether long-term behaviour change can be demonstrated within the project.</p>
+      <p>Research suggests that school-based vaping programs show clearer short-term improvements in knowledge and intentions (Gardner et al., 2024). For this reason, the evaluation focuses on whether students leave the project better able to understand vaping, question the information they encounter and make informed health decisions.</p>
+    </div>
+  </section>
+</div>
+
+<!-- ================= REFERENCES ================= -->
+<div class="view" id="v-references" hidden>
+  <header class="phead"><div class="in"><div class="eyebrow">APA 7th edition</div><h1>References</h1></div></header>
+  <section class="band">
+    <div class="in prose refs">
+      <p>Allen, K.-A., Grove, C., Berger, E., Marinucci, A., &amp; Warton, W. (2022). <em>High impact wellbeing strategies resource</em>. State of Victoria (Department of Education and Training). https://www.education.vic.gov.au/Documents/school/teachers/teachingresources/practice/High_Impact_Wellbeing_Strategies.pdf</p>
+      <p>Australian Government Department of Education. (n.d.). <em>Family–School Partnerships Framework</em>. https://www.education.gov.au/supporting-family-school-community-partnerships-learning/family-school-partnerships/family-school-partnerships-framework</p>
+      <p>Australian Government Department of Health, Disability and Ageing. (2024). <em>Australian secondary school students alcohol and drug survey</em>. https://www.health.gov.au/resources/collections/australian-secondary-school-students-alcohol-and-drug-survey</p>
+      <p>Berti, S., Grazia, V., &amp; Molinari, L. (2023). Active student participation in whole-school interventions in secondary school: A systematic literature review. <em>Educational Psychology Review, 35</em>, Article 52. https://doi.org/10.1007/s10648-023-09773-x</p>
+      <p>Department of Education and Training Victoria. (2021). <em>Framework for Improving Student Outcomes (FISO 2.0): Evidence base</em>. State of Victoria. https://www2.education.vic.gov.au/pal/fiso/resources <span class="flag">Cited in a draft section</span></p>
+      <p>Donaldson, C. D., Stupplebeen, D. A., Fecho, C. L., Ta, T., Zhang, X., &amp; Williams, R. J. (2022). Nicotine vaping for relaxation and coping: Race/ethnicity differences and social connectedness mechanisms. <em>Addictive Behaviors, 132</em>, Article 107365. https://doi.org/10.1016/j.addbeh.2022.107365</p>
+      <p>Education Council. (2018). <em>Australian Student Wellbeing Framework</em>. Education Services Australia. https://studentwellbeinghub.edu.au/media/vdkkg4eg/aswf_booklet.pdf <span class="flag">Cited in a draft section</span></p>
+      <p>Garbacz, S. A., Minch, D. R., Jordan, P., Young, K., &amp; Weist, M. D. (2020). Moving towards meaningful and significant family partnerships in education. <em>Adolescent Psychiatry, 10</em>(2), 110–122. https://doi.org/10.2174/2210676610666200324113209 <span class="flag">Cited in a draft section</span></p>
+      <p>Gardner, L. A., Rowe, A.-L., Newton, N. C., Egan, L., Hunter, E., Devine, E. K., Aitken, T., Thornton, L., Teesson, M., Stockings, E., &amp; Champion, K. E. (2024). A systematic review and meta-analysis of school-based preventive interventions targeting e-cigarette use among adolescents. <em>Prevention Science, 25</em>(7), 1104–1121. https://doi.org/10.1007/s11121-024-01730-6</p>
+      <p>Gardner, L. A., Rowe, A.-L., Stockings, E., Egan, L., Hawkins, A., Blackburn, K., Teesson, M., Champion, K. E., &amp; Newton, N. C. (2025). Co-design of the 'OurFutures Vaping' programme: A school-based eHealth intervention to prevent e-cigarette use. <em>Health Promotion International, 40</em>(3), Article daaf085. https://doi.org/10.1093/heapro/daaf085</p>
+      <p>Goriounova, N. A., &amp; Mansvelder, H. D. (2012). Short- and long-term consequences of nicotine exposure during adolescence for prefrontal cortex neuronal network function. <em>Cold Spring Harbor Perspectives in Medicine, 2</em>(12), Article a012120. https://doi.org/10.1101/cshperspect.a012120</p>
+      <p>Jongenelis, M. I., &amp; Robinson, A. (2023). Educators' perceptions of e-cigarettes in Australian secondary schools. <em>Tobacco Induced Diseases, 21</em>(1), Article 41. https://doi.org/10.18332/tid/161025</p>
+      <p>Li, X., Zhang, Y., Zhang, R., Chen, F., Shao, L., &amp; Zhang, L. (2022). Association between e-cigarettes and asthma in adolescents: A systematic review and meta-analysis. <em>American Journal of Preventive Medicine, 62</em>(6), 953–960. https://doi.org/10.1016/j.amepre.2022.01.015</p>
+      <p>Livingston, J. A., Chen, C.-H., Kwon, M., &amp; Park, E. (2022). Physical and mental health outcomes associated with adolescent e-cigarette use. <em>Journal of Pediatric Nursing, 64</em>, 1–17. https://doi.org/10.1016/j.pedn.2022.01.006</p>
+      <p>Novak, M. L., Gyawali, P., &amp; Wang, G. Y. (2024). Association between e-cigarettes, cognition and mood in adolescents. <em>Substance Use &amp; Misuse, 59</em>(12), 1820–1827. https://doi.org/10.1080/10826084.2024.2383597</p>
+      <p>Pettigrew, S., Santos, J. A., Li, Y., Jun, M., Anderson, C., &amp; Jones, A. (2023). Short report: Factors contributing to young people's susceptibility to e-cigarettes in four countries. <em>Drug and Alcohol Dependence, 250</em>, Article 109944. https://doi.org/10.1016/j.drugalcdep.2023.109944</p>
+      <p>Rutherford, B. N., Lim, C. C. W., Cheng, B., Sun, T., Vu, G. T., Johnson, B., Ashley, D. P., Chung, J., Huang, S., Leung, J., Stjepanović, D., Connor, J. P., &amp; Chan, G. C. K. (2023). Viral vaping: A systematic review and meta-analysis of e-cigarette and tobacco-related social media content and its influence on youth behaviours and attitudes. <em>Addictive Behaviors, 147</em>, Article 107828. https://doi.org/10.1016/j.addbeh.2023.107828</p>
+      <p>Scully, M., Bain, E., Koh, I., Wakefield, M., &amp; Durkin, S. (2023). <em>ASSAD 2022–2023: Australian secondary school students' use of tobacco and e-cigarettes</em>. Cancer Council Victoria. https://www.health.gov.au/sites/default/files/2024-04/australian-secondary-school-students-use-of-tobacco-and-e-cigarettes-2022-2023.pdf</p>
+      <p>Thomas, L., McCausland, K., Leaversuch, F., Freeman, B., Wolf, K., Leaver, T., &amp; Jancey, J. (2024). The school community's role in addressing vaping: Findings from qualitative research to inform pedagogy, practice and policy. <em>Health Promotion Journal of Australia, 36</em>(1). https://doi.org/10.1002/hpja.895</p>
+      <p>Victorian Curriculum and Assessment Authority. (2026a). <em>Health and Physical Education: Levels 9–10</em>. Victorian Curriculum F–10 Version 2.0. https://f10.vcaa.vic.edu.au/learning-areas/health-and-physical-education/curriculum?level=9%E2%80%9310</p>
+      <p>Victorian Curriculum and Assessment Authority. (2026b). <em>Personal and Social Capability: Levels 9–10</em>. Victorian Curriculum F–10 Version 2.0. https://f10.vcaa.vic.edu.au/capabilities/personal-and-social-capability/curriculum?level=9%E2%80%9310</p>
+      <p>Victorian Department of Education. (2026). <em>Student voice, agency and leadership: Policy</em>. Policy and Advisory Library. <span class="flag">Cited in a draft section</span></p>
+    </div>
+  </section>
+</div>
+
+<footer><div class="in"><span>Deep Breaths · EDF5865 Tutorial 7 Group 5 · Carrie, Yutong and Nathan · Sunrise School is a pseudonym</span><span class="legend"><i></i>Pages with a dot contain incomplete draft sections</span></div></footer>
+
+<script>
+(function(){
+  var views=["home","why","approach","wellbeing","journey","curriculum","action","impact","references"];
+  function show(){
+    var h=(location.hash||"#home").slice(1);
+    if(views.indexOf(h)===-1) h="home";
+    views.forEach(function(v){document.getElementById("v-"+v).hidden=(v!==h);});
+    document.querySelectorAll("#links a").forEach(function(a){
+      if(a.getAttribute("href")==="#"+h) a.setAttribute("aria-current","page"); else a.removeAttribute("aria-current");
+    });
+    window.scrollTo(0,0);
+  }
+  window.addEventListener("hashchange",show);
+  show();
+
+  // Breathing station: 30 seconds of 4-second in / 4-second out breathing
+  var TOTAL=30, PHASE=4;
+  var breath=document.getElementById("breath"), orb=document.getElementById("orb"),
+      prog=document.getElementById("prog"), count=document.getElementById("count"),
+      btn=document.getElementById("breathBtn");
+  var timer=null, start=0, lastPhase=-1;
+  function reset(msg){
+    clearInterval(timer); timer=null; lastPhase=-1;
+    breath.classList.remove("running","in");
+    prog.style.setProperty("--p",0);
+    btn.textContent=msg?"Go again":"Start 30-second breathing";
+    btn.classList.remove("stop");
+    orb.innerHTML=msg||"Take a<br>deep breath";
+    count.textContent=msg?"30 seconds complete":"30 seconds · breathe in for 4, out for 4";
+  }
+  function tick(){
+    var t=(Date.now()-start)/1000;
+    if(t>=TOTAL){ prog.style.setProperty("--p",1); reset("Well done.<br>Notice how<br>you feel."); return; }
+    prog.style.setProperty("--p",t/TOTAL);
+    var phase=Math.floor(t/PHASE), inPhase=phase%2===0;
+    var secs=PHASE-Math.floor(t%PHASE);
+    if(phase!==lastPhase){ lastPhase=phase; breath.classList.toggle("in",inPhase); }
+    orb.innerHTML=(inPhase?"Breathe in":"Breathe out")+"<b>"+secs+"</b>";
+    var left=Math.ceil(TOTAL-t);
+    count.textContent=left+" second"+(left===1?"":"s")+" left";
+  }
+  btn.addEventListener("click",function(){
+    if(timer){ reset(); return; }
+    breath.classList.add("running");
+    btn.textContent="Stop"; btn.classList.add("stop");
+    start=Date.now(); tick();
+    timer=setInterval(tick,100);
+  });
+})();
+</script>
+
+</body>
+</html>
